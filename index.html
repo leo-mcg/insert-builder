@@ -6,20 +6,63 @@
 <title>Insert Builder · printable notebook inserts</title>
 <meta name="description" content="Build a printable Traveler's Company passport notebook insert from blocks (dot grid, lined, weekly, monthly, comic panels, word search, sudoku) and download a print-ready saddle-stitch PDF. Free, runs in your browser.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='6' y='3' width='20' height='26' fill='%23f6f3ec' stroke='%23333' stroke-width='2'/%3E%3Cpath d='M16 3v26' stroke='%23333' stroke-width='1.5'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="theme-color" content="#f4ecdd">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to builder</a>
 <header class="top">
-  <div class="wrap">
-    <h1>Insert Builder</h1>
-    <p class="lede">Stack up page blocks, then download a print-ready PDF for a saddle-stitched notebook insert. Default size is the Traveler's Company passport (89 × 124 mm). Everything runs in your browser.</p>
+  <div class="wrap hero">
+    <div class="hero-text">
+      <p class="eyebrow">Printable notebook inserts</p>
+      <h1>Insert Builder</h1>
+      <p class="lede">Design your own passport-size notebook insert, block by block, then print, fold and staple it at home.</p>
+      <ul class="chips" aria-label="Highlights">
+        <li>Traveler's passport 89 × 124 mm</li>
+        <li>Saddle-stitch PDF</li>
+        <li>Free, runs in your browser</li>
+      </ul>
+    </div>
+    <figure class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 400 270" xmlns="http://www.w3.org/2000/svg" focusable="false">
+        <defs>
+          <pattern id="dotp" width="9" height="9" patternUnits="userSpaceOnUse" x="3" y="3">
+            <circle cx="1" cy="1" r="0.9" fill="#a69c8c"/>
+          </pattern>
+          <linearGradient id="foldL" x1="0" x2="1"><stop offset="0.75" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#3b2a1a" stop-opacity="0.14"/></linearGradient>
+          <linearGradient id="foldR" x1="0" x2="1"><stop offset="0" stop-color="#3b2a1a" stop-opacity="0.12"/><stop offset="0.25" stop-color="#000" stop-opacity="0"/></linearGradient>
+          <linearGradient id="leather" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9a5a34"/><stop offset="1" stop-color="#6e3b1f"/></linearGradient>
+          <filter id="soft" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#4a3420" flood-opacity="0.28"/></filter>
+        </defs>
+        <g transform="rotate(-3 200 135)">
+          <rect x="22" y="22" width="356" height="226" rx="10" fill="url(#leather)" filter="url(#soft)"/>
+          <path d="M32 30 h336 M32 240 h336" stroke="#c48a5c" stroke-width="1.2" stroke-dasharray="5 4" opacity="0.7"/>
+          <rect x="36" y="32" width="164" height="206" fill="#fbf6ea"/>
+          <rect x="200" y="32" width="164" height="206" fill="#fdf9ef"/>
+          <rect x="44" y="40" width="138" height="190" fill="url(#dotp)"/>
+          <g fill="none" stroke="#bdb3a3" stroke-width="1.1">
+            <rect x="214" y="42" width="138" height="56"/>
+            <rect x="214" y="104" width="66" height="60"/>
+            <rect x="286" y="104" width="66" height="60"/>
+            <path d="M214 170 h138 v58 h-138 z"/>
+          </g>
+          <path d="M236 70 q14 -18 30 -4 t30 -6" fill="none" stroke="#8a4b2a" stroke-width="1.6" stroke-linecap="round" opacity="0.75"/>
+          <path d="M60 60 h52 M60 70 h76" stroke="#5b4a3a" stroke-width="1.4" stroke-linecap="round" opacity="0.55"/>
+          <rect x="36" y="32" width="164" height="206" fill="url(#foldL)"/>
+          <rect x="200" y="32" width="164" height="206" fill="url(#foldR)"/>
+          <path d="M200 40 v190" stroke="#cfc4b2" stroke-width="1" stroke-dasharray="6 7"/>
+          <rect x="197.5" y="16" width="5" height="238" fill="#2b2622" opacity="0.88"/>
+        </g>
+      </svg>
+    </figure>
   </div>
 </header>
 
 <main id="main" class="wrap grid">
   <section class="panel" aria-labelledby="settings-h">
-    <h2 id="settings-h">1. Size and paper</h2>
+    <h2 id="settings-h"><span class="step">1</span>Size and paper</h2>
     <div class="fields">
       <label>Page size
         <select id="size"></select>
@@ -42,7 +85,7 @@
   </section>
 
   <section class="panel blocks-panel" aria-labelledby="blocks-h">
-    <h2 id="blocks-h">2. Blocks <span class="hint">in page order, starting with page 1 (the front cover)</span></h2>
+    <h2 id="blocks-h"><span class="step">2</span>Blocks <span class="hint">in page order, starting with page 1 (the front cover)</span></h2>
     <ol id="blocks" class="blocks"></ol>
     <div class="add" role="group" aria-label="Add a block">
       <span class="add-label">Add</span>
@@ -51,7 +94,7 @@
   </section>
 
   <section class="panel output" aria-labelledby="out-h">
-    <h2 id="out-h">3. Check and download</h2>
+    <h2 id="out-h"><span class="step">3</span>Check and download</h2>
     <div class="counter" aria-live="polite">
       <div class="count-line"><strong id="count-num">0 / 32</strong> pages</div>
       <div class="bar" aria-hidden="true"><span id="bar-used"></span><span id="bar-pad"></span><span id="bar-key"></span><span id="bar-fill"></span></div>

@@ -20,7 +20,7 @@ No server, no account; your block list is saved in `localStorage`.
 
 | Block | Count | Notes |
 |---|---|---|
-| Dot grid | pages | 5 mm grid, 0.30 mm dots, #999, symmetric to the page edges, gutter column dropped |
+| Dot grid | pages | 3 mm grid by default (4 or 5 mm optional), 0.30 mm dots, #999; 5 mm matches the reference generator exactly (4.5 mm outer, 9.5 mm gutter); 3 mm is centred in the margins (5 mm outer, 9 mm gutter) |
 | Lined | pages | 5/6/7 mm, 0.28 mm #C8C8C8 |
 | Blank | pages | |
 | Weekly spread | weeks (2 pages each) | undated or dated, Monday or Sunday start |
@@ -31,7 +31,7 @@ No server, no account; your block list is saved in `localStorage`.
 
 Page math: blocks fill the book from page 1 (front cover). Two-page spreads always
 start on a left-hand page (a dot-grid page is inserted if needed). Leftover pages
-become dot grid, answer keys go on the last pages. Over-full books can't be generated.
+become 3 mm dot grid, answer keys go on the last pages. Over-full books can't be generated.
 
 Specs: guides 0.28 mm #C8C8C8; outer margins 4.5-5 mm, gutter 8.5-9.5 mm,
 mirrored for left/right pages. No circles or rounded frames (dots only).
@@ -62,6 +62,10 @@ mirrored for left/right pages. No circles or rounded frames (dots only).
 - `js/render.js` one drawing API with a PDF (vector) and a canvas (preview) backend
 
 Run locally: `python3 -m http.server` in this folder, open http://localhost:8000.
+
+## Fonts
+
+Fraunces and Inter (SIL OFL 1.1), self-hosted in `fonts/`.
 
 ## License
 

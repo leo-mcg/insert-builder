@@ -150,7 +150,7 @@ export class CanvasRenderer {
     c.moveTo(this._x(pts[0][0]), this._y(pts[0][1]));
     for (const p of pts.slice(1)) c.lineTo(this._x(p[0]), this._y(p[1]));
     if (closed) c.closePath();
-    if (fill) { c.fillStyle = fill === '#FFFFFF' ? '#fff' : this._c(fill); c.fill(); }
+    if (fill) { c.fillStyle = fill === '#FFFFFF' ? '#fffdf7' : fill; c.fill(); }
     if (stroke) { c.strokeStyle = this._c(stroke); c.lineWidth = this._lw(w); c.lineJoin = 'miter'; c.stroke(); }
     c.restore();
   }

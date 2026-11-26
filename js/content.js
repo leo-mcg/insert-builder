@@ -5,7 +5,7 @@
 //   no circles anywhere except the dots themselves.
 
 export const GUIDE = { w: 0.28, color: '#C8C8C8' };
-export const DOT = { d: 0.3, color: '#999999', step: 5 };
+export const DOT = { d: 0.3, color: '#999999' };
 export const OUTER = 5;
 export const GUTTER = 9;
 const LABEL = '#9A9A9A';
@@ -22,19 +22,32 @@ export function contentBox(W, H, verso, outer = OUTER, gutter = GUTTER) {
 
 // ---------------------------------------------------------------- dot grid
 // Port of build_insert.draw_dots: dots symmetric to the page edges, the
-// column nearest the fold dropped so the gutter is one extra 5 mm step.
-export function drawDotGrid(r, W, H, verso) {
-  const step = DOT.step;
+// column nearest the fold dropped so the gutter is one extra step. If that
+// leaves the margins outside 4.5-5 mm (outer) / 8.5-9.5 mm (gutter), as with
+// a 3 mm step, the grid is instead centred inside those margin ranges.
+export const DEFAULT_DOT_STEP = 3;
+export function dotColumns(W, verso, step) {
   const nx = Math.floor((W - 9 + 1e-6) / step);
-  const mx = (W - nx * step) / 2; // 4.5 mm for 89 mm
-  const ny = Math.floor((H - 9 + 1e-6) / step);
-  const my = (H - ny * step) / 2; // 4.5 mm for 124 mm
+  const mx = (W - nx * step) / 2;
   let xs = [];
   for (let i = 0; i <= nx; i++) xs.push(mx + i * step);
-  // drop the gutter column(s) until the gutter margin is >= 8.5 mm
   while (xs.length && (verso ? W - xs[xs.length - 1] : xs[0]) < 8.5 - 1e-6) {
     if (verso) xs.pop(); else xs.shift();
   }
+  const outer = verso ? xs[0] : W - xs[xs.length - 1];
+  const gutter = verso ? W - xs[xs.length - 1] : xs[0];
+  if (outer <= 5 + 1e-6 && gutter <= 9.5 + 1e-6) return xs;
+  const n = Math.floor((W - 13 + 1e-6) / step);
+  const slack = W - 13 - n * step;
+  const o = 4.5 + slack / 2, g = 8.5 + slack / 2;
+  xs = [];
+  for (let i = 0; i <= n; i++) xs.push(verso ? o + i * step : g + i * step);
+  return xs;
+}
+export function drawDotGrid(r, W, H, verso, step = DEFAULT_DOT_STEP) {
+  const xs = dotColumns(W, verso, step);
+  const ny = Math.floor((H - 9 + 1e-6) / step);
+  const my = (H - ny * step) / 2; // 4.5 mm (5 mm step) or 5 mm (3 mm step) for 124 mm
   const pts = [];
   for (const x of xs) for (let j = 0; j <= ny; j++) pts.push([x, my + j * step]);
   r.dots(pts, DOT.d, DOT.color);
@@ -421,7 +434,7 @@ export function drawPage(r, desc, ctx) {
   const { W, H, pageNum, total, pageNumbers } = ctx;
   const verso = pageNum % 2 === 0;
   switch (desc.kind) {
-    case 'dot': drawDotGrid(r, W, H, verso); break;
+    case 'dot': drawDotGrid(r, W, H, verso, desc.opts.spacing || DEFAULT_DOT_STEP); break;
     case 'lined': drawLined(r, W, H, verso, desc.opts.spacing || 6); break;
     case 'blank': break;
     case 'weekly': drawWeekly(r, W, H, verso, desc); break;

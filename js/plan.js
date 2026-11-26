@@ -13,7 +13,7 @@ export const PAPERS = {
 function today() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
 
 export const BLOCK_TYPES = {
-  dot: { label: 'Dot grid', unit: 'pages', per: 1, opts: () => ({}) },
+  dot: { label: 'Dot grid', unit: 'pages', per: 1, opts: () => ({ spacing: 3 }) },
   lined: { label: 'Lined', unit: 'pages', per: 1, opts: () => ({ spacing: 6 }) },
   blank: { label: 'Blank', unit: 'pages', per: 1, opts: () => ({}) },
   weekly: { label: 'Weekly spread', unit: 'weeks', per: 2, spread: true, opts: () => ({ dated: false, start: today(), weekStart: 'mon' }) },

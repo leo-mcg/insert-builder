@@ -94,6 +94,8 @@ function optionsFor(b) {
   const set = (k, rerender = false) => (v) => { o[k] = v; if (rerender) renderBlocks(); changed(); };
   const wsSel = () => selectField('Week starts', o.weekStart, [['mon', 'Monday'], ['sun', 'Sunday']], set('weekStart'));
   switch (b.type) {
+    case 'dot':
+      return [selectField('Dot spacing', String(o.spacing || 3), [['3', '3 mm'], ['4', '4 mm'], ['5', '5 mm']], (v) => { o.spacing = +v; changed(); })];
     case 'lined':
       return [selectField('Line spacing', String(o.spacing), [['5', '5 mm'], ['6', '6 mm'], ['7', '7 mm']], (v) => { o.spacing = +v; changed(); })];
     case 'weekly': {
@@ -153,7 +155,7 @@ function renderBlocks() {
     const li = el('li', { class: 'block' },
       el('div', { class: 'block-head' },
         el('div', { class: 'block-title' }, `${i + 1}. ${t.label}`, sub),
-        el('label', { class: 'count' }, countInput, t.unit),
+        el('label', { class: 'count' }, countInput, el('span', {}, t.unit)),
         el('div', { class: 'icon-btns' },
           el('button', { type: 'button', class: 'icon', 'data-up': '', 'aria-label': `Move ${t.label} up`, disabled: i === 0, onclick: () => move(-1) }, '↑'),
           el('button', { type: 'button', class: 'icon', 'data-down': '', 'aria-label': `Move ${t.label} down`, disabled: i === state.blocks.length - 1, onclick: () => move(1) }, '↓'),
@@ -208,34 +210,39 @@ function renderThumbs() {
   const { W, H } = pageSize(state);
   const N = plan.N;
   const pages = plan.pages.slice(0, N);
-  const scale = 1.55; // px per mm on screen
+  const scale = 1.4; // px per mm on screen
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   const groups = [[1]];
   for (let p = 2; p < N; p += 2) groups.push([p, p + 1]);
   groups.push([N]);
   for (const g of groups) {
-    const cw = W * 2, ch = H;
+    const single = g.length === 1;
+    const cw = single ? W : W * 2, ch = H;
     const cv = document.createElement('canvas');
     cv.width = Math.round(cw * scale * dpr); cv.height = Math.round(ch * scale * dpr);
     cv.style.width = `${cw * scale}px`; cv.style.height = `${ch * scale}px`;
     const ctx = cv.getContext('2d');
-    ctx.fillStyle = '#e9e5dc'; ctx.fillRect(0, 0, cv.width, cv.height);
     const r = new CanvasRenderer(ctx, scale * dpr, H);
     for (const n of g) {
-      const ox = n % 2 === 0 ? 0 : W;
-      ctx.fillStyle = '#fff';
+      const ox = single || n % 2 === 0 ? 0 : W;
+      ctx.fillStyle = '#fffdf7';
       ctx.fillRect(ox * scale * dpr, 0, W * scale * dpr, H * scale * dpr);
       r.setOrigin(0, 0); r.clipStart(ox, 0, W, H); r.setOrigin(ox, 0);
       drawPage(r, pages[n - 1], { W, H, pageNum: n, total: N, pageNumbers: state.pageNumbers });
       r.setOrigin(0, 0); r.clipEnd();
     }
-    ctx.strokeStyle = 'rgba(0,0,0,.12)'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(W * scale * dpr, 0); ctx.lineTo(W * scale * dpr, cv.height); ctx.stroke();
+    if (!single) {
+      // soft fold shading on screen only
+      const fx = W * scale * dpr, fw = 10 * dpr;
+      const gr = ctx.createLinearGradient(fx - fw, 0, fx + fw, 0);
+      gr.addColorStop(0, 'rgba(60,40,20,0)'); gr.addColorStop(0.5, 'rgba(60,40,20,.10)'); gr.addColorStop(1, 'rgba(60,40,20,0)');
+      ctx.fillStyle = gr; ctx.fillRect(fx - fw, 0, 2 * fw, cv.height);
+    }
     const names = g.map((n) => describe(pages[n - 1]));
     cv.setAttribute('role', 'img');
     cv.setAttribute('aria-label', g.map((n, i) => `Page ${n}: ${names[i]}`).join('; '));
     const lbl = g.length === 1 ? (g[0] === 1 ? 'p. 1 (front cover)' : `p. ${g[0]} (back cover)`) : `pp. ${g[0]}-${g[1]}`;
-    box.appendChild(el('div', { class: 'spread' }, cv, el('span', { class: 'lbl' }, lbl)));
+    box.appendChild(el('div', { class: `spread${single ? ' single' : ''}` }, cv, el('span', { class: 'lbl' }, lbl)));
   }
 }
 function describe(d) {
