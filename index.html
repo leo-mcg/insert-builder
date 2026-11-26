@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insert Builder · printable notebook inserts</title>
+<meta name="description" content="Build a printable Traveler's Company passport notebook insert from blocks (dot grid, lined, weekly, monthly, comic panels, word search, sudoku) and download a print-ready saddle-stitch PDF. Free, runs in your browser.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='6' y='3' width='20' height='26' fill='%23f6f3ec' stroke='%23333' stroke-width='2'/%3E%3Cpath d='M16 3v26' stroke='%23333' stroke-width='1.5'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to builder</a>
+<header class="top">
+  <div class="wrap">
+    <h1>Insert Builder</h1>
+    <p class="lede">Stack up page blocks, then download a print-ready PDF for a saddle-stitched notebook insert. Default size is the Traveler's Company passport (89 × 124 mm). Everything runs in your browser.</p>
+  </div>
+</header>
+
+<main id="main" class="wrap grid">
+  <section class="panel" aria-labelledby="settings-h">
+    <h2 id="settings-h">1. Size and paper</h2>
+    <div class="fields">
+      <label>Page size
+        <select id="size"></select>
+      </label>
+      <div id="custom-size" class="row2" hidden>
+        <label>Width (mm) <input id="customW" type="number" min="40" max="140" step="0.5" inputmode="decimal"></label>
+        <label>Height (mm) <input id="customH" type="number" min="60" max="140" step="0.5" inputmode="decimal"></label>
+      </div>
+      <label>Print on
+        <select id="paper"></select>
+      </label>
+      <fieldset class="seg">
+        <legend>Insert length</legend>
+        <label><input type="radio" name="total" value="32"> 32 pages</label>
+        <label><input type="radio" name="total" value="64"> 64 pages</label>
+      </fieldset>
+      <label class="check"><input id="pageNumbers" type="checkbox"> Tiny page numbers</label>
+    </div>
+    <p id="size-error" class="alert error" role="alert" hidden></p>
+  </section>
+
+  <section class="panel blocks-panel" aria-labelledby="blocks-h">
+    <h2 id="blocks-h">2. Blocks <span class="hint">in page order, starting with page 1 (the front cover)</span></h2>
+    <ol id="blocks" class="blocks"></ol>
+    <div class="add" role="group" aria-label="Add a block">
+      <span class="add-label">Add</span>
+      <div id="add-buttons" class="add-buttons"></div>
+    </div>
+  </section>
+
+  <section class="panel output" aria-labelledby="out-h">
+    <h2 id="out-h">3. Check and download</h2>
+    <div class="counter" aria-live="polite">
+      <div class="count-line"><strong id="count-num">0 / 32</strong> pages</div>
+      <div class="bar" aria-hidden="true"><span id="bar-used"></span><span id="bar-pad"></span><span id="bar-key"></span><span id="bar-fill"></span></div>
+      <ul id="count-notes" class="notes"></ul>
+    </div>
+    <div class="actions">
+      <button id="gen" class="btn primary" type="button">Generate PDF</button>
+      <button id="gen-flat" class="btn" type="button">Pages in reading order (PDF)</button>
+    </div>
+    <p id="gen-status" class="status" role="status"></p>
+    <details class="howto">
+      <summary>How to print, cut and bind</summary>
+      <ol>
+        <li>Print the PDF on <span data-paper-name>US Letter</span>, portrait, at <strong>100% / Actual size</strong> (not "fit to page"). Check the 50 mm bar in the top margin with a ruler.</li>
+        <li>Duplex: <strong>flip on the long edge</strong>. Use color or grayscale at normal quality so the light guides hold.</li>
+        <li>Stack the printed sheets in order, sheet 1 on top, fronts up.</li>
+        <li>Make 5 stack cuts: the 4 outer crop marks, then 1 cut on the middle marks.</li>
+        <li>Put the bottom pile under the top pile, keeping the order.</li>
+        <li>Fold so page 1 is the front cover, crease, and staple or stitch through the fold.</li>
+      </ol>
+    </details>
+  </section>
+
+  <section class="panel preview" aria-labelledby="prev-h">
+    <h2 id="prev-h">Preview <span class="hint">reading order; guides are darkened on screen, printed light</span></h2>
+    <div id="thumbs" class="thumbs"></div>
+  </section>
+</main>
+
+<div class="mini" aria-hidden="true"><span id="mini-count">0 / 32 pages</span><a href="#out-h" tabindex="-1">Check and download</a></div>
+
+<footer class="foot wrap">
+  <p>Free and open source: <a href="https://github.com/leo-mcg/insert-builder">github.com/leo-mcg/insert-builder</a>. Your design is saved in this browser only. Site by <a href="https://leo-mcg.github.io/">Leo-McG</a>.</p>
+</footer>
+
+<script src="js/pdf-lib.min.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
