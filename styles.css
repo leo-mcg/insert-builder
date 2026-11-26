@@ -105,7 +105,7 @@ input[type=checkbox], input[type=radio] { width: 18px; height: 18px; margin: 0; 
 .icon.del:hover:not(:disabled) { color: var(--err); border-color: #e2b4ad; background: #fbeeec; }
 .block-opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px 12px; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--line); }
 .block-opts:empty { display: none; }
-.block-opts .check { margin-top: 18px; }
+.block-opts .check { margin-top: 0; align-self: end; }
 .block-opts .btn { align-self: end; }
 .add { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
 .add-label { display: block; font-size: .86rem; font-weight: 500; color: var(--muted); margin-bottom: 8px; }
